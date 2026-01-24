@@ -8,3 +8,5 @@ file .%rc -> % run command
 
 ````bash
 nvm install
+npm install
+npm run dev
