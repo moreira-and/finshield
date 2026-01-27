@@ -6,7 +6,14 @@ Implementação do https://www.tabnews.com.br para o https://curso.dev
 
 file .%rc -> % run command
 
-````bash
+```bash
 nvm install
 npm install
 npm run dev
+```
+
+## DEV
+
+garanta que seu editor está suportando o ['editorconfig'](https://editorconfig.org/).
+
+Configure o formatador padrão com prettier
