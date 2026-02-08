@@ -13,13 +13,9 @@ async function query(queryObject) {
 
   try {
     await client.connect();
-    await client.query("BEGIN TRANSACTION;");
     result = await client.query(queryObject);
-    await client.query("COMMIT TRANSACTION;");
   } catch (error) {
     console.error("Error executing query:", error);
-    await client.query("ROLLBACK TRANSACTION;");
-    throw error;
   } finally {
     await client.end();
   }
