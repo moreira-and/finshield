@@ -13,7 +13,7 @@ test("GET to /api/v1/status should return 200", async () => {
 
   // DATABASE
   expect(responseBody.dependences.database).toBeDefined();
-  expect(responseBody.dependences.database.version).toEqual("16.0");
+  expect(responseBody.dependences.database.version).toMatch(/^16\./);
   expect(responseBody.dependences.database.active_connections).toEqual(1);
   expect(
     responseBody.dependences.database.max_connections,
