@@ -4,7 +4,7 @@
   "description": "Implementação do https://www.tabnews.com.br para o https://curso.dev",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run docker:up && npm run migration:up && npm run next:up",
+    "dev": "npm run docker:up && npm run wait-for-db && npm run migration:up && npm run next:up",
     "next:up": "next dev",
     "docker:up": "docker compose --env-file .env.development -f infra/compose.yaml up -d",
     "docker:stop": "docker compose --env-file .env.development -f infra/compose.yaml stop",
@@ -15,7 +15,8 @@
     "test:watch": "jest --watchAll --runInBand",
     "migration:create": "node-pg-migrate --migrations-dir infra/migrations create",
     "migration:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up",
-    "migration:down": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development down"
+    "migration:down": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development down",
+    "wait-for-db": "node infra/scripts/wait-for-db.js"
   },
   "author": "",
   "license": "MIT",

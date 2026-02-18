@@ -1,7 +1,7 @@
 services:
   database:
     image: "postgres:16.0-alpine3.18"
-    container_name: finshield-postgres
+    container_name: database-dev
     ports:
       - "${POSTGRES_PORT}:5432"
     environment:
