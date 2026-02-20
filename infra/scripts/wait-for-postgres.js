@@ -4,7 +4,7 @@ function checkDatabaseConnection() {
   exec("docker exec postgres-dev pg_isready --host localhost", handleReturn);
 }
 
-function handleReturn(error, stdout, stderr) {
+function handleReturn(stdout) {
   if (stdout.search("accepting connections") === -1) {
     process.stdout.write(".");
     setTimeout(checkDatabaseConnection, 1000); // Tenta novamente em 5 segundos
