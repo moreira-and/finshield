@@ -1,7 +1,7 @@
 const { exec } = require("node:child_process");
 
 function checkDatabaseConnection() {
-  exec("docker exec database-dev pg_isready --host localhost", handleReturn);
+  exec("docker exec postgres-dev pg_isready --host localhost", handleReturn);
 }
 
 function handleReturn(error, stdout, stderr) {
