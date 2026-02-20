@@ -11,7 +11,7 @@
     "services:down": "docker compose --env-file .env.development -f infra/compose.yaml down",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "test": "npm run services:up && concurrently -k -s command-jest --names next,jest --hide next 'next dev' 'jest --runInBand'",
+    "test": "npm run services:up && concurrently -k -s command-jest --names next,jest --hide next \"next dev\" \"jest --runInBand\"",
     "test:watch": "jest --watchAll --runInBand",
     "migration:create": "node-pg-migrate --migrations-dir infra/migrations create",
     "migration:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up",
