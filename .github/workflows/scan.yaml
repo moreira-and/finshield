@@ -3,7 +3,7 @@ name: Scan
 on: pull_request
 
 jobs:
-  jest:
+  GitLeaks:
     name: gitleaks
     runs-on: ubuntu-latest
     steps:
