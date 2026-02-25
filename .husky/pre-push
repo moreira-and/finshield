@@ -1,1 +1,1 @@
-npm run scan:all && npm run test
+prettier --check . && next lint --dir . && npm run scan:all && npm run test
