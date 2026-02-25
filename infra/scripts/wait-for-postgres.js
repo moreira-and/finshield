@@ -4,7 +4,7 @@ function checkDatabaseConnection() {
   exec("docker exec postgres-dev pg_isready --host localhost", handleReturn);
 }
 
-function handleReturn(error, stdout, stderr) {
+function handleReturn(error, stdout) {
   if (error) {
     console.log("⏳ Aguardando o banco...");
     setTimeout(checkDatabaseConnection, 1000);
