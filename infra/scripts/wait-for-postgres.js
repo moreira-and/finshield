@@ -4,14 +4,20 @@ function checkDatabaseConnection() {
   exec("docker exec postgres-dev pg_isready --host localhost", handleReturn);
 }
 
-function handleReturn(stdout) {
-  if (stdout.search("accepting connections") === -1) {
-    process.stdout.write(".");
-    setTimeout(checkDatabaseConnection, 1000); // Tenta novamente em 5 segundos
+function handleReturn(error, stdout) {
+  if (error) {
+    console.log("⏳ Aguardando o banco...");
+    setTimeout(checkDatabaseConnection, 1000);
     return;
   }
 
-  console.log("\n🟢 Banco de dados pronto e aceitando conexões!");
+  if (!stdout || !stdout.includes("accepting connections")) {
+    console.log("⏳ Ainda não está pronto...");
+    setTimeout(checkDatabaseConnection, 1000);
+    return;
+  }
+
+  console.log("✅ Postgres pronto.");
   return;
 }
 
