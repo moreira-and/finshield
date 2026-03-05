@@ -40,6 +40,7 @@ async function status(request, response) {
     const publicErrorObject = new InternalServerError({
       cause: error,
     });
+    console.info("Error dentro do controller de status");
     console.error("Error fetching status:", publicErrorObject);
     return response.status(500).json(publicErrorObject);
   }
