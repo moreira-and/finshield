@@ -1,4 +1,5 @@
 import database from "infra/database.js";
+import { InternalServerError } from "infra/errors.js";
 
 async function status(request, response) {
   const queryDbVersion = "SHOW server_version;";
@@ -25,7 +26,6 @@ async function status(request, response) {
     const maxConnectionsValue = parseInt(
       resultMaxConnections.rows[0].max_connections,
     );
-
     return response.status(200).json({
       updated_at: currentTime,
       dependences: {
@@ -37,7 +37,11 @@ async function status(request, response) {
       },
     });
   } catch (error) {
-    return response.status(500).json({ error: "Database connection failed" });
+    const publicErrorObject = new InternalServerError({
+      cause: error,
+    });
+    console.error("Error fetching status:", publicErrorObject);
+    return response.status(500).json(publicErrorObject);
   }
 }
 
