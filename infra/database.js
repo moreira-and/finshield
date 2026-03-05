@@ -9,9 +9,11 @@ async function query(queryObject) {
     await client.connect();
     result = await client.query(queryObject);
   } catch (error) {
+    console.info("Error no catch do database.js");
     console.error("Error executing query:", error);
+    throw error;
   } finally {
-    await client.end();
+    await client?.end();
   }
 
   return result;
