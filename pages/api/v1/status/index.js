@@ -1,7 +1,14 @@
+import { createRouter } from "next-connect";
 import database from "infra/database.js";
-import { InternalServerError } from "infra/errors.js";
+import controller from "infra/controller.js";
 
-async function status(request, response) {
+const router = createRouter();
+
+router.get(getHandler);
+
+export default router.handler(controller.errorHandlers);
+
+async function getHandler(request, response) {
   const queryDbVersion = "SHOW server_version;";
   const queryActiveConn = {
     text: `
@@ -11,39 +18,29 @@ async function status(request, response) {
         AND datname = $1;`,
     values: [process.env.POSTGRES_DB],
   };
+
   const queryMaxConn = "SHOW max_connections;";
+  const currentTime = new Date().toISOString();
 
-  try {
-    const currentTime = new Date().toISOString();
+  const resultDbVersion = await database.query(queryDbVersion);
+  const resultActiveConnections = await database.query(queryActiveConn);
+  const resultMaxConnections = await database.query(queryMaxConn);
 
-    const resultDbVersion = await database.query(queryDbVersion);
-    const resultActiveConnections = await database.query(queryActiveConn);
-    const resultMaxConnections = await database.query(queryMaxConn);
+  const versionValue = resultDbVersion.rows[0].server_version;
+  const activeConnectionsValue =
+    resultActiveConnections.rows[0].active_connections;
+  const maxConnectionsValue = parseInt(
+    resultMaxConnections.rows[0].max_connections,
+  );
 
-    const versionValue = resultDbVersion.rows[0].server_version;
-    const activeConnectionsValue =
-      resultActiveConnections.rows[0].active_connections;
-    const maxConnectionsValue = parseInt(
-      resultMaxConnections.rows[0].max_connections,
-    );
-    return response.status(200).json({
-      updated_at: currentTime,
-      dependences: {
-        database: {
-          version: versionValue,
-          active_connections: activeConnectionsValue,
-          max_connections: maxConnectionsValue,
-        },
+  return response.status(200).json({
+    updated_at: currentTime,
+    dependences: {
+      database: {
+        version: versionValue,
+        active_connections: activeConnectionsValue,
+        max_connections: maxConnectionsValue,
       },
-    });
-  } catch (error) {
-    const publicErrorObject = new InternalServerError({
-      cause: error,
-    });
-    console.info("Error dentro do controller de status");
-    console.error("Error fetching status:", publicErrorObject);
-    return response.status(500).json(publicErrorObject);
-  }
+    },
+  });
 }
-
-export default status;
