@@ -1,4 +1,4 @@
-import orchestrator from "tests/orchestrator";
+import orchestrator from "tests/orchestrator.js";
 import { version as uuidVersion } from "uuid";
 
 beforeAll(async () => {
@@ -34,7 +34,7 @@ describe("GET /api/v1/users/[username]", () => {
         id: responseBody2.id,
         username: "MesmoCase",
         email: "mesmo.case@gmail.com",
-        password: "123senha",
+        password: responseBody2.password,
         created_at: responseBody2.created_at,
         updated_at: responseBody2.updated_at,
       });
@@ -68,7 +68,7 @@ describe("GET /api/v1/users/[username]", () => {
         id: responseBody2.id,
         username: "MissMatch",
         email: "miss.match@gmail.com",
-        password: "123senha",
+        password: responseBody2.password,
         created_at: responseBody2.created_at,
         updated_at: responseBody2.updated_at,
       });
