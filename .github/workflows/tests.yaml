@@ -4,8 +4,10 @@ on: pull_request
 
 jobs:
   jest:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     name: Jest Ubuntu
     runs-on: ubuntu-latest
+    environment: preview
     steps:
       - uses: actions/checkout@v4
 
@@ -16,3 +18,5 @@ jobs:
       - run: npm ci
 
       - run: npm test
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
